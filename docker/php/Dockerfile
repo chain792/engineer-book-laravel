@@ -5,7 +5,10 @@ zlib1g-dev \
 libzip-dev \
 vim \
 && docker-php-ext-install zip pdo_mysql opcache
-WORKDIR /var/www
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh
+RUN bash nodesource_setup.sh
+RUN apt-get install -y nodejs
+WORKDIR /var/www/laravel-project
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER 1 
 ENV COMPOSER_HOME /composer

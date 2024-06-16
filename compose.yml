@@ -1,13 +1,21 @@
 version: '3'
 services:
   app:
-    container_name: app  
+    image: engineer_book_laravel:latest
     build: ./docker/php
     volumes:
       - .:/var/www
+  js:
+    image: engineer_book_laravel:latest
+    command: npm run dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/var/www
+    depends_on:
+      - app
   nginx:
     image: nginx 
-    container_name: nginx
     ports:
       - 8000:80 
     volumes:
@@ -18,7 +26,6 @@ services:
       - app
   db:
     image: mysql:8.0
-    container_name: db
     environment: 
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: database
