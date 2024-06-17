@@ -1,7 +1,11 @@
 <x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            投稿一覧
+        </h2>
+    </x-slot>
+
     <div class="container mx-auto sm:px-4 pt-3">
-        <h1 class="mb-3">投稿一覧</h1>
-        <!-- 投稿一覧 -->
         <div class="flex flex-wrap ">
             @if($books->isEmpty())
                 <p class="mt-3 text-gray-600">レビューされた本はありません。</p>

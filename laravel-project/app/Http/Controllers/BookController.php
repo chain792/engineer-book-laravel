@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class BookController extends Controller
 {
@@ -62,5 +63,28 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         //
+    }
+
+    public function search(Request $request)
+    {
+        $params = $request->only(['search']);
+        if (! array_key_exists('search', $params)) {
+            $googleBooks = [];
+        } elseif (! $params['search']) {
+            $googleBooks = [];
+            session()->flash('message', '検索キーワードが入力されていません');
+        } else {
+            $url = "https://www.googleapis.com/books/v1/volumes";
+            $text = $params['search'];
+            $response = Http::get($url, [
+                'q' => $text,
+                'langRestrinct' => 'ja',
+                'maxResult' => 30,
+                'key' => env('GOOGLE_API_KEY'),
+            ]);
+            $googleBooks = $response->json();
+        }
+
+        return view('books.search', compact('googleBooks'));
     }
 }
